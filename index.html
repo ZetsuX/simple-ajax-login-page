@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Asap"
+        />
+        <script
+            src="https://kit.fontawesome.com/8ee6b1ea1e.js"
+            crossorigin="anonymous"
+        ></script>
+        <title>AJAX Login</title>
+        <script
+            src="https://code.jquery.com/jquery-3.6.4.js"
+            integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+                font-family: "Asap", sans-serif;
+            }
+
+            html {
+                height: 100%;
+            }
+
+            body {
+                font-size: 1.5rem;
+                background-repeat: no-repeat;
+                background-image: linear-gradient(#a9907e, #675d50);
+                font-weight: 300;
+            }
+
+            div#contact_form {
+                width: 800px;
+                display: flex;
+                align-items: stretch;
+                justify-content: space-evenly;
+                border: 2px solid black;
+                padding: 10px;
+            }
+
+            div.input-box {
+                display: flex;
+                margin: 10px 0;
+                flex-wrap: wrap;
+            }
+
+            div.input-box label {
+                display: inline-block;
+                margin: 10px 10px 10px 0;
+                width: 20%;
+            }
+
+            div.input-box input {
+                font-size: 1.5rem;
+                border: 1px solid #ccc;
+                padding: 4px 8px;
+                flex: 1;
+            }
+
+            input.button {
+                font-size: 1.5rem;
+                background: black;
+                color: white;
+                border: 1px solid black;
+                margin: 10px;
+                padding: 4px 40px;
+            }
+
+            h1 {
+                font-size: 5.5rem;
+                text-transform: uppercase;
+                font-weight: 400;
+                letter-spacing: 2px;
+                line-height: 0.8;
+                color: white;
+                text-shadow: -1px 1px 2px #000, 1px 1px 2px #000,
+                    1px -1px 0 #000, -1px -1px 0 #000;
+            }
+
+            div.greetings {
+                text-align: center;
+                font-size: 1.2rem;
+                background-color: #f3deba;
+                background-image: linear-gradient(
+                    90deg,
+                    transparent 28%,
+                    #abc4aa 28%
+                );
+                background-size: 50px;
+            }
+
+            div.input-box input.error {
+                border: 2px dashed red;
+                background: #fee;
+            }
+
+            div.input-box label.error {
+                color: red;
+                font-size: 1rem;
+                text-align: right;
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            img {
+                height: 20rem;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="contact_form">
+            <form name="contact" action="">
+                <fieldset>
+                    <div class="input-box">
+                        <label for="name" id="name_label">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            minlength="3"
+                            placeholder="Insert your name.."
+                            class="text-input"
+                            required
+                        />
+                    </div>
+
+                    <div class="input-box">
+                        <label for="email" id="email_label">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            placeholder="Insert your email address.."
+                            class="text-input"
+                        />
+                    </div>
+
+                    <div class="input-box">
+                        <label for="phone" id="phone_label">Phone</label>
+                        <input
+                            type="tel"
+                            name="phone"
+                            id="phone"
+                            class="text-input"
+                            placeholder="Insert your phone number.."
+                        />
+                    </div>
+
+                    <input
+                        type="submit"
+                        name="submit"
+                        class="button"
+                        id="submit_btn"
+                        value="Send"
+                    />
+                </fieldset>
+            </form>
+            <div class="greetings">
+                <h1>Contact US</h1>
+                <p>We are waiting to hear from you!</p>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                $("form").validate({
+                    rules: {
+                        name: {
+                            required: true,
+                            minlength: 3,
+                        },
+                        email: {
+                            required: true,
+                            email: true,
+                        },
+                        phone: {
+                            required: true,
+                            number: true,
+                            minlength: 7,
+                            maxlength: 15,
+                        },
+                    },
+                });
+            });
+
+            $(function () {
+                $("form").on("submit", function (e) {
+                    if ($(this).valid()) {
+                        var dataString = $(this).serialize();
+
+                        $.ajax({
+                            type: "POST",
+                            url: "",
+                            data: dataString,
+                            success: function () {
+                                $("#contact_form").html(
+                                    "<div id='message' style='background-color:#F3DEBA; border-radius:10px; padding: 1rem;'></div>"
+                                );
+                                $("#message")
+                                    .html("<h2>Contact Form Submitted!</h2>")
+                                    .append("<p>We will be in touch soon.</p>")
+                                    .hide()
+                                    .fadeIn(1500, function () {
+                                        $("#message").append(
+                                            "<img id='checkmark' src='assets/contact.jpg' />"
+                                        );
+                                    });
+                            },
+                        });
+                        e.preventDefault();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
